@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,40 +17,46 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.w3c.dom.Text;
 
+import java.security.spec.ECField;
 
-public class PassKeyActivity extends Activity {
 
+public class PassKeyActivity extends Activity  implements View.OnClickListener{
 
+    private Button submitButton;
+    private EditText passKeyInput;          // The pass key field
+    private String keyCheckPhrase;          // The phrase to check the key against
 
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
+
         setContentView(R.layout.activity_pass_key);
 
-        Button submitButton = (Button) findViewById(R.id.passKeyOK);
-        final EditText passKeyInput = (EditText) findViewById(R.id.keyInput);
+        keyCheckPhrase = getSharedPreferences("key_infos", Context.MODE_PRIVATE).getString("keyCheckPhrase", null);
+        // set the phrase from the shared prefrences
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        submitButton = (Button) findViewById(R.id.passKeyOK);
+        passKeyInput = (EditText) findViewById(R.id.keyInput);
 
-                if(passKeyInput.getText().toString().equals("12345")) {
-                    startActivity(new Intent(PassKeyActivity.this, MessageListActivity.class));
-                    PassKeyActivity.this.finish();
-                } else {
-
-
-                    Toast.makeText(PassKeyActivity.this, "Incorrect Key!", Toast.LENGTH_SHORT).show();
-                    passKeyInput.setText("");
-                }
-
-
-            }
-        });
-
-
+        submitButton.setOnClickListener(this);
 
     }
 
+    @Override
+    public void onClick(View view) {
+        String key = passKeyInput.getText().toString();
+        if(!key.equals("")) {
+            MessageEncryptor e = new MessageEncryptor(key);
+            try {
+                e.decrypt(keyCheckPhrase);
+                Functions.launchMessageList(key, this);     // No exception decrypting key, key is correct
+            } catch (EncryptionOperationNotPossibleException ex) {
+                Toast.makeText(this, "Invalid Key.", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Key cannot be empty.", Toast.LENGTH_LONG).show();
+        }
+    }
 }

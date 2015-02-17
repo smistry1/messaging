@@ -7,22 +7,16 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name=".PassKeyActivity"
             android:label="Enter Key"
             android:theme="@android:style/Theme.Holo.Dialog" >
-            <intent-filter android:label="Messages" >
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MessageListActivity"
@@ -39,8 +33,10 @@
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.intent.action.SENDTO" />
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />
@@ -48,39 +44,35 @@
             </intent-filter>
         </activity>
 
-
         <receiver
             android:name=".WAPPushReceiver"
             android:permission="android.permission.BROADCAST_WAP_PUSH" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+
                 <data android:mimeType="application/vnd.wap.mms-message" />
             </intent-filter>
         </receiver>
-
-
-        <receiver android:name=".SMSReceiver"
-            android:permission="android.permission.BROADCAST_SMS"
+        <receiver
+            android:name=".SMSReceiver"
             android:enabled="true"
             android:exported="true"
-
-        >
+            android:permission="android.permission.BROADCAST_SMS" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
-
         </receiver>
 
         <service
             android:name=".RespondWithSMSService"
-            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
-
             android:enabled="true"
-            android:exported="true" >
-
+            android:exported="true"
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE" >
             <intent-filter>
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />
@@ -88,6 +80,21 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".SetupActivity"
+            android:label="Setup Your Key"
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name=".StartupActivity"
+            android:label="Messaging"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

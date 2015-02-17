@@ -11,20 +11,25 @@ import java.util.Random;
 
 public class SMSReceiver extends BroadcastReceiver {
 
-    private SharedPreferences sharedPrefs;
 
-
+    /**
+     * Method is called by system when a new SMS Message Comes In
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
       SharedPreferences sharedPrefs = context.getSharedPreferences("key_infos", Context.MODE_PRIVATE);
       Bundle b = intent.getExtras();
       Object[] messages = (Object[]) b.get("pdus"); // get array of messages in Protocol Data Units
-      String defaultKey = sharedPrefs.getString("defaultKey", null);
+      String defaultKey = sharedPrefs.getString("defaultKey", null);  // get the default key from sps
       MessageDatabase messageDatabase = new MessageDatabase(context);
 
       if(defaultKey == null) {
-          defaultKey = generateDefaultKey();
-          sharedPrefs.edit().putString("defaultKey", defaultKey);
+          defaultKey = Functions.getRandomString(30);
+          SharedPreferences.Editor e = sharedPrefs.edit();
+          e.putString("defaultKey", defaultKey);
+          e.commit();
+
+          // If the default key does not exist yet, generate and store it.
       }
 
       MessageEncryptor encryptor = new MessageEncryptor(defaultKey);
@@ -37,14 +42,11 @@ public class SMSReceiver extends BroadcastReceiver {
           messageDatabase.insertMessage(encryptor.encrypt(messageBody), sender, 0);
       }
 
+
+       MessageListActivity.refreshList(); // Refreshes Message List if open.
+
     }
 
-    private String generateDefaultKey() {
-        String key  = "";
 
-        for (int i = 0; i < 30; i ++) // 30 char string
-            key +=  (char) (new Random().nextInt((126 - 32) + 1) + 32); // random char between 32 and 126        }
 
-        return key;
-    }
 }

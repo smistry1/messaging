@@ -15,11 +15,12 @@ public class ComposeMessageActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose_message);
-        Button sendButton = (Button) (findViewById(R.id.sendButton));
+        setContentView(R.layout.activity_compose_message);              // Set XML Layout
+        Button sendButton = (Button) (findViewById(R.id.sendButton));   // Get Button From XML LAyout
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {                       // Will run when button is clicked
                 Toast.makeText(ComposeMessageActivity.this, "Message Sent!", Toast.LENGTH_SHORT).show();
                 ComposeMessageActivity.this.finish();
             }

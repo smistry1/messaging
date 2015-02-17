@@ -8,5 +8,7 @@
     <string name="title_activity_message_list">MessageListActivity</string>
     <string name="title_activity_message_view">MessageViewActivity</string>
     <string name="title_activity_compose_message">Compose Message</string>
+    <string name="title_activity_setup">SetupActivity</string>
+    <string name="title_activity_startup">Messages</string>
 
 </resources>

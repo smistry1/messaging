@@ -38,7 +38,9 @@ public class AccessControlTest extends ActivityUnitTestCase<PassKeyActivity>{
     @SmallTest
     public void testResponseWithValidKey() {
         this.setObjects();
-        this.keyField.setText("12345"); // set the key field to contain "12345"
+        this.keyField.setText("abc123"); // set the key field to contain "12345"
+        //assumes 'abc123' is currently the correct key.
+
         this.okButton.performClick(); // Press the OK Button
 
         assertNotNull("No launch intent fired", getStartedActivityIntent()); // App should fire an intent to launch another activity
@@ -51,7 +53,6 @@ public class AccessControlTest extends ActivityUnitTestCase<PassKeyActivity>{
         this.keyField.setText("abc"); // set the key field to contain "abc"
         this.okButton.performClick(); // Press the OK Button
 
-        assertTrue((this.keyField.getText().toString().equals(""))); // Key field should be emptied
         assertTrue(!isFinishCalled()); // The activity should not close
     }
 

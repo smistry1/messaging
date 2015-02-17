@@ -2,6 +2,9 @@ package net.sanish.sms;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 
+/**
+ * Class To encrypt messages using Jasypt.
+ */
 public class MessageEncryptor {
 
     private BasicTextEncryptor encryptor; // Instance of Jasypt TextEncryptor

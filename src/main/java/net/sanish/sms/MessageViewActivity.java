@@ -14,21 +14,19 @@ import java.util.Date;
 
 public class MessageViewActivity extends Activity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_view);
+        setContentView(R.layout.activity_message_view);  // Set XML Layout
 
-        Bundle extras = getIntent().getExtras();
-        TextView sender = (TextView) findViewById(R.id.sender);
-        TextView message = (TextView) findViewById(R.id.message);
-        TextView date = (TextView) findViewById(R.id.date);
-
-        sender.setText(extras.get("sender").toString());
-        message.setText(extras.get("message").toString());
-
-        SimpleDateFormat d = new SimpleDateFormat("d-M-yyyy H:m:s");
-        date.setText(d.format(Calendar.getInstance().getTime()));
+        Message m = (Message) getIntent().getExtras().get("message");  // Get Message from extras
+        TextView sender = (TextView) findViewById(R.id.sender);        // Get Sender field
+        TextView message = (TextView) findViewById(R.id.message);      // Get Message field
+        TextView date = (TextView) findViewById(R.id.date);            // Get Date Field
+        sender.setText(m.getSender());                            // Set data for sender field
+        message.setText(m.getMessageBody());                      // Set data for message field
+        date.setText(m.getDate());                                // Set data for date field
 
     }
 
