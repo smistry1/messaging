@@ -2,18 +2,13 @@ package net.sanish.sms;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import net.sanish.sms.R;
 
 public class SetupActivity extends Activity implements View.OnClickListener {
 
@@ -41,12 +36,12 @@ public class SetupActivity extends Activity implements View.OnClickListener {
             SharedPreferences.Editor e = getSharedPreferences("key_infos", Context.MODE_PRIVATE).edit();
 
             MessageEncryptor encryptor = new MessageEncryptor(key.getText().toString());
-            String checkPhrase = encryptor.encrypt(Functions.getRandomString(30));
+            String checkPhrase = encryptor.encrypt(Global.getRandomString(30));
             //encrypt a random string using the user's key to check it later.
 
             e.putString("keyCheckPhrase", checkPhrase);
             e.commit();
-            Functions.launchMessageList(key.getText().toString(), this); // Launch this message list passing the key.
+            Global.launchMessageList(key.getText().toString(), this); // Launch this message list passing the key.
 
         }
     }

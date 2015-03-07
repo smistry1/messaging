@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import net.sanish.sms.R;
 
 /**
  * Activity for determining which screen to present on start up.
@@ -18,6 +15,7 @@ public class StartupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i;
+        Global.clearNotification(this);
         SharedPreferences sp = getSharedPreferences("key_infos", Context.MODE_PRIVATE);
         if(sp.getString("keyCheckPhrase", null) == null) {
             // key does not exist, ask user to set up key.
@@ -26,6 +24,7 @@ public class StartupActivity extends Activity {
             i = new Intent(this, PassKeyActivity.class);
             // Key Exists, ask user for it.
         }
+
         startActivity(i);
         finish();
     }

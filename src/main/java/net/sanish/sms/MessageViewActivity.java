@@ -15,6 +15,8 @@ import java.util.Date;
 public class MessageViewActivity extends Activity {
 
 
+    private boolean openedBefore = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,20 @@ public class MessageViewActivity extends Activity {
 
     }
 
+    public void onResume () {
+        super.onResume();
+        if(openedBefore) {
+            finish();
+            MessageListActivity.allowResumeAccess = false;
+
+            // If this activity is being resumed close it, and prevent ListActivity from being
+            // resumed also, which forces user to renter key.
+
+        } else {
+
+            openedBefore = true; // next time onResume is called, it will be openedBefore.
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

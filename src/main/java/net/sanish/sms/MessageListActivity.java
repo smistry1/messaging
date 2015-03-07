@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,8 @@ public class MessageListActivity extends Activity {
     private String defaultKey;              // The default key
     private ArrayAdapter adapter;           // List adapter for displaying messages
     private String key;                     // the users key
+    public static boolean allowResumeAccess = true;
+    public static boolean forceAllowResumeAccess = false;
 
     /**
      * @return returns an ArrayList of 10 messages starting from the lastMessageOffset
@@ -51,6 +54,11 @@ public class MessageListActivity extends Activity {
         return messages;
     }
 
+
+    private void allowResumeAccess() {
+        this.allowResumeAccess = true; // Allows Activity to be resumed.
+        this.forceAllowResumeAccess = true; // Prevents allowResumeAccess being set to false onPause
+    }
     /**
     * Will update the list of messages shown (to be called when new message has been delivered)
     */
@@ -83,6 +91,21 @@ public class MessageListActivity extends Activity {
         }).start();
     }
 
+    public void onResume() {
+        super.onResume();
+        if(!allowResumeAccess) {
+            startActivity(new Intent(this, PassKeyActivity.class));
+            allowResumeAccess(); // Allow user to get back in later.
+            finish();
+        }
+    }
+
+    public void onPause() {
+        super.onPause();
+        if(!forceAllowResumeAccess)
+            allowResumeAccess = false;
+        forceAllowResumeAccess = false;
+    }
     /**
      * Will reencrypt a message using the user's key and store in the database
      * (to be called when message is encrypted using the default key)
@@ -199,14 +222,38 @@ public class MessageListActivity extends Activity {
 
 
                 startActivity(intent); // start  the message view activity using intent
+                allowResumeAccess(); // Allow user to resume after finished reading message.
 
             }
         });
         list.setAdapter(adapter);
 
+        registerForContextMenu(list);
+
     }
 
 
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if(v.getId() == R.id.list) {
+            menu.add(ContextMenu.NONE, 0, ContextMenu.NONE, "Delete");
+        }
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        System.out.println(item.getItemId());
+        System.out.println(info.position);
+
+        if(item.getItemId() == 0)  {  // Delete was clicked
+            int listPosition = info.position; // the position of the item that was selected.
+            Message m = listItems.get(listPosition); // get the message that has been selected.
+            db.deleteMessageById(m.getId());        // Delete the message from DB.
+            listItems.remove(listPosition);         // Remove from the list view.
+            adapter.notifyDataSetChanged();         // Refresh the list
+        }
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,13 +1,14 @@
 package net.sanish.sms;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-
-import java.util.Random;
 
 public class SMSReceiver extends BroadcastReceiver {
 
@@ -24,7 +25,7 @@ public class SMSReceiver extends BroadcastReceiver {
       MessageDatabase messageDatabase = new MessageDatabase(context);
 
       if(defaultKey == null) {
-          defaultKey = Functions.getRandomString(30);
+          defaultKey = Global.getRandomString(30);
           SharedPreferences.Editor e = sharedPrefs.edit();
           e.putString("defaultKey", defaultKey);
           e.commit();
@@ -40,10 +41,35 @@ public class SMSReceiver extends BroadcastReceiver {
           String messageBody = message.getMessageBody();
           String sender = message.getOriginatingAddress();
           messageDatabase.insertMessage(encryptor.encrypt(messageBody), sender, 0);
+
+          showNewMessageNotification(context, sender);
       }
 
 
        MessageListActivity.refreshList(); // Refreshes Message List if open.
+
+
+
+    }
+
+    private void showNewMessageNotification(Context c, String sender) {
+
+        Notification.Builder  nb = new Notification.Builder(c);
+        nb.setContentTitle("New SMS Message(s)");
+
+        PendingIntent i = PendingIntent.getActivity(c, 0, new Intent(c, StartupActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        nb.setContentIntent(i);
+
+        nb.setAutoCancel(true);
+        nb.setSmallIcon(R.drawable.closed);
+
+        Notification n = nb.build();
+
+
+
+        NotificationManager m = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+        m.notify(0, n);
+
 
     }
 

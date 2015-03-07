@@ -1,26 +1,14 @@
 package net.sanish.sms;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
-import org.w3c.dom.Text;
-
-import java.security.spec.ECField;
 
 
 public class PassKeyActivity extends Activity  implements View.OnClickListener{
@@ -51,7 +39,7 @@ public class PassKeyActivity extends Activity  implements View.OnClickListener{
             MessageEncryptor e = new MessageEncryptor(key);
             try {
                 e.decrypt(keyCheckPhrase);
-                Functions.launchMessageList(key, this);     // No exception decrypting key, key is correct
+                Global.launchMessageList(key, this);     // No exception decrypting key, key is correct
             } catch (EncryptionOperationNotPossibleException ex) {
                 Toast.makeText(this, "Invalid Key.", Toast.LENGTH_LONG).show();
             }
