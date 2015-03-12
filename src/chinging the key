@@ -28,7 +28,7 @@ android:inputType="textPassword"
 android:hint="New Key" 
 android:ems="10"
 android:id="@+id/confirmKey"
-/>
+/> 
 <Button
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
