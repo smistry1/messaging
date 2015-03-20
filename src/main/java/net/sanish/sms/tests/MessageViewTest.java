@@ -23,7 +23,7 @@ public class MessageViewTest  extends ActivityUnitTestCase<MessageViewActivity> 
     protected void setUp() throws Exception {
         super.setUp();
         Intent launchIntent = new Intent(getInstrumentation().getTargetContext(), PassKeyActivity.class);
-        launchIntent.putExtra("message", new Message("test message", "0123", 0, 0, "2015-01-01 00:00"));
+        launchIntent.putExtra("message", new Message("test message", "0123", 0, 0, "2015-01-01 00:00", "333"));
         startActivity(launchIntent, null, null);
     }
 

@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:showAsAction="never"
      />
+
+    <item android:id="@+id/messageTypeToggle"
+        android:title="Sent Messages"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+    />
 </menu>

@@ -8,7 +8,7 @@ import net.sanish.sms.Message;
 public class MessageTest extends AndroidTestCase {
 
     public void test() {
-        Message m = new Message("testmessage", "3543", 0, 1 , "2015-01-01 00:00"); // create a message object
+        Message m = new Message("testmessage", "3543", 0, 1 , "2015-01-01 00:00", "123"); // create a message object
         assertEquals("2015-01-01 00:00", m.getDate());
         assertEquals(true, m.isEncrypted());
         assertEquals(0, m.getEncryptionState());

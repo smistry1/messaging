@@ -13,6 +13,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Recipient"
+        android:inputType="phone"
+        android:id="@+id/recipient"
+    />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Find in Contacts"
+        android:id="@+id/contactButton"
     />
 
     <EditText
@@ -21,6 +30,8 @@
         android:layout_weight="1"
         android:hint = "Message"
         android:gravity="top"
+        android:maxLength="160"
+        android:id="@+id/messageText"
      />
 
     <Button

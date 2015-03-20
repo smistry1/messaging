@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
@@ -40,7 +41,7 @@ public class SMSReceiver extends BroadcastReceiver {
           SmsMessage message = SmsMessage.createFromPdu((byte[])rawMessage);
           String messageBody = message.getMessageBody();
           String sender = message.getOriginatingAddress();
-          messageDatabase.insertMessage(encryptor.encrypt(messageBody), sender, 0);
+          messageDatabase.insertMessage(encryptor.encrypt(messageBody), sender, Global.getPhoneNumber(context), 0);
 
           showNewMessageNotification(context, sender);
       }
@@ -62,13 +63,11 @@ public class SMSReceiver extends BroadcastReceiver {
 
         nb.setAutoCancel(true);
         nb.setSmallIcon(R.drawable.closed);
-
-        Notification n = nb.build();
-
-
+        nb.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+        // vibrate, ring, and light the phone using phone settings
 
         NotificationManager m = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
-        m.notify(0, n);
+        m.notify(0, nb.build());
 
 
     }

@@ -20,7 +20,7 @@ public class MessageDatabaseTest extends AndroidTestCase {
 
         MessageDatabase db = new MessageDatabase(getContext());
 
-        db.insertMessage("test", "0123", 0);
+        db.insertMessage("test", "0123", "5432", 0);
 
         db.updateMessage("hello", 1, 1);
 
@@ -39,11 +39,11 @@ public class MessageDatabaseTest extends AndroidTestCase {
 
         clearDatabase();
         MessageDatabase db = new MessageDatabase(getContext());
-        db.insertMessage("sdgjsjgjs", "35346436", 0);
+        db.insertMessage("sdgjsjgjs", "35346436", "5432", 0);
         Cursor c1 = db.getMessageById(1);
         c1.moveToFirst();
         ArrayList a1 = db.getMessagesList(0);
-        db.insertMessage("lllff", "45346", 0);
+        db.insertMessage("lllff", "45346", "5432", 0);
         Cursor c2 = db.getMessages(0);
         c2.moveToFirst();
         ArrayList a2 = db.getMessagesList(0);

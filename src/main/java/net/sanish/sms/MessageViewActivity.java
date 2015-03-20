@@ -12,10 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MessageViewActivity extends Activity {
+public class MessageViewActivity extends SubActivity {
 
 
-    private boolean openedBefore = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,43 +26,22 @@ public class MessageViewActivity extends Activity {
         TextView sender = (TextView) findViewById(R.id.sender);        // Get Sender field
         TextView message = (TextView) findViewById(R.id.message);      // Get Message field
         TextView date = (TextView) findViewById(R.id.date);            // Get Date Field
-        sender.setText(m.getSender());                            // Set data for sender field
+
+        if(sender.equals(Global.getPhoneNumber(getApplicationContext()))) {
+            sender.setText(m.getRecipientDisplayName());
+            // if the sender of the message is the user, show the recipient
+        } else {
+            sender.setText(m.getSenderDisplayName());
+            // otherwise show the sender
+        }
+
         message.setText(m.getMessageBody());                      // Set data for message field
         date.setText(m.getDate());                                // Set data for date field
 
     }
 
-    public void onResume () {
-        super.onResume();
-        if(openedBefore) {
-            finish();
-            MessageListActivity.allowResumeAccess = false;
 
-            // If this activity is being resumed close it, and prevent ListActivity from being
-            // resumed also, which forces user to renter key.
 
-        } else {
 
-            openedBefore = true; // next time onResume is called, it will be openedBefore.
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.message_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

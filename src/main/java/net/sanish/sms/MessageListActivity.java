@@ -31,7 +31,7 @@ import java.util.ArrayList;
 */
 public class MessageListActivity extends Activity {
 
-    private static MessageListActivity instance;
+    public static MessageListActivity instance;
     // Make instance available to outside so that if the List is Open the MessageReceiver can notify
     // and the list can be refreshed.
     private int lastMessageOffset = 0;      // offset of the next message to be requested
@@ -41,6 +41,7 @@ public class MessageListActivity extends Activity {
     private String defaultKey;              // The default key
     private ArrayAdapter adapter;           // List adapter for displaying messages
     private String key;                     // the users key
+    private int messageType = 0;            // Switch between sent and received messages.
     public static boolean allowResumeAccess = true;
     public static boolean forceAllowResumeAccess = false;
 
@@ -49,7 +50,13 @@ public class MessageListActivity extends Activity {
      * will increase lastMessageOffset by 10
      */
     private ArrayList<Message> getMoreMessages() {
-        ArrayList<Message> messages =  db.getMessagesList(lastMessageOffset);
+        ArrayList<Message> messages;
+        if(messageType == 0) {
+            messages = db.getMessagesList(lastMessageOffset);
+        } else {
+            System.out.println("test");
+            messages = db.getSentMessagesList(lastMessageOffset);
+        }
         lastMessageOffset += 10;
         return messages;
     }
@@ -155,7 +162,14 @@ public class MessageListActivity extends Activity {
                 Message m = listItems.get(i);             // Get Message Corresponding to list index
                 String messageText;
                 String messageHeader;
-                messageHeader = m.getSender();
+
+                if(messageType == 0) {
+                    messageHeader = m.getSenderDisplayName(); // If viewing received messages, show the sender
+                } else {
+                    messageHeader = m.getRecipientDisplayName(); // otherwise show the recipient.
+                }
+
+
                 if(m.isEncrypted() == true) {
                    switch (m.getEncryptionState()) {
                        case 0 :  // Message is encrypted with default key not user key.
@@ -237,20 +251,34 @@ public class MessageListActivity extends Activity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if(v.getId() == R.id.list) {
             menu.add(ContextMenu.NONE, 0, ContextMenu.NONE, "Delete");
+            menu.add(ContextMenu.NONE, 1, ContextMenu.NONE, "Reply");
         }
+    }
+
+    private void showComposeScreen(String sender) {
+        Intent i = new Intent(this, ComposeMessageActivity.class);
+        i.putExtra("key", key);
+        if(sender != null) {
+            i.putExtra("recipient", sender);
+        }
+        allowResumeAccess(); // allow to resume without key after coming out of compose screen
+        startActivity(i);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        System.out.println(item.getItemId());
-        System.out.println(info.position);
-
+        //System.out.println(item.getItemId());
+        //System.out.println(info.position);
+        int listPosition = info.position; // the position of the item that was selected.
         if(item.getItemId() == 0)  {  // Delete was clicked
-            int listPosition = info.position; // the position of the item that was selected.
+
             Message m = listItems.get(listPosition); // get the message that has been selected.
             db.deleteMessageById(m.getId());        // Delete the message from DB.
             listItems.remove(listPosition);         // Remove from the list view.
             adapter.notifyDataSetChanged();         // Refresh the list
+        } else if(item.getItemId() == 1) { // Reply was selected
+            Message m = listItems.get(listPosition); // get the message that has been selected.
+            showComposeScreen(m.getSender()); // show the compose screen with the sender as recipient.
         }
         return true;
     }
@@ -264,12 +292,21 @@ public class MessageListActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
         if (id == R.id.action_compose) {
-            startActivity(new Intent(this, ComposeMessageActivity.class));
+            showComposeScreen(null);
+        } else if(id == R.id.messageTypeToggle) {
+
+            if(messageType == 0) {
+                messageType = 1; // Sent Messages
+                item.setTitle("Received Messages"); // Change Text of Toggle.
+            } else {
+                messageType = 0; // Received Messages
+                item.setTitle("Sent Messages"); // Change Text of Toggle.
+            }
+
+            refreshList();
         }
         return super.onOptionsItemSelected(item);
     }

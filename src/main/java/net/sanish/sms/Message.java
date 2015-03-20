@@ -1,5 +1,7 @@
 package net.sanish.sms;
 
+
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,9 @@ public class Message implements Serializable{
     private int encryptionState;        // encryption state, 0 for default key, 1 for user key
     private int id;                     // ID of message
     private String date;                // Date Message was received
+    private String senderDisplayName;   // Number or (Name where available)
+    private String recipient;           // Receiver of message
+    private String receiverDisplayName; // Number or (Name where available)
 
     /**
      *
@@ -22,15 +27,35 @@ public class Message implements Serializable{
      * @param id                - id of message
      * @param date              - date Message was received
      */
-    public Message(String messageBody, String sender, int encryptionState, int id, String date) {
+    public Message(String messageBody, String sender, int encryptionState, int id, String date, String recipient) {
         this.messageBody = messageBody;
         this.sender = sender;
         this.isEncrypted = true;
         this.encryptionState = encryptionState;
         this.id = id;
         this.date = date;
-    }   
+        this.recipient = recipient;
+    }
 
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setSenderDisplayName(String sender) {
+        this.senderDisplayName = sender;
+    }
+
+    public void setReceiverDisplayName(String r) {
+        this.receiverDisplayName = r;
+    }
+
+    public String getRecipientDisplayName() {
+        return receiverDisplayName;
+    }
+
+    public String getSenderDisplayName() {
+        return this.senderDisplayName;
+    }
 
     public String getDate() {
         return date;

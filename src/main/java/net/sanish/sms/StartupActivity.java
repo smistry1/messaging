@@ -14,6 +14,10 @@ public class StartupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(MessageListActivity.instance != null) {
+            MessageListActivity.instance.finish();
+        }
+        MessageListActivity.allowResumeAccess = true;
         Intent i;
         Global.clearNotification(this);
         SharedPreferences sp = getSharedPreferences("key_infos", Context.MODE_PRIVATE);
