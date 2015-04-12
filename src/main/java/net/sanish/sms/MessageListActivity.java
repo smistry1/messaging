@@ -62,6 +62,9 @@ public class MessageListActivity extends Activity {
     }
 
 
+    /**
+     * Allows the activity to be resumed after pause
+     */
     private void allowResumeAccess() {
         this.allowResumeAccess = true; // Allows Activity to be resumed.
         this.forceAllowResumeAccess = true; // Prevents allowResumeAccess being set to false onPause
@@ -98,6 +101,10 @@ public class MessageListActivity extends Activity {
         }).start();
     }
 
+    /**
+     * Called when the activity is resumed
+     * Will finish the activity if allowResumeAccess is false, and start the passkey activity
+     */
     public void onResume() {
         super.onResume();
         if(!allowResumeAccess) {
@@ -107,6 +114,10 @@ public class MessageListActivity extends Activity {
         }
     }
 
+
+    /**
+     *  Called when the activity is paused.
+     */
     public void onPause() {
         super.onPause();
         if(!forceAllowResumeAccess)
@@ -247,14 +258,19 @@ public class MessageListActivity extends Activity {
     }
 
 
-
+    /**
+     * Creates the context menu when a messsage is long tapped
+     */
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if(v.getId() == R.id.list) {
             menu.add(ContextMenu.NONE, 0, ContextMenu.NONE, "Delete");
             menu.add(ContextMenu.NONE, 1, ContextMenu.NONE, "Reply");
         }
     }
-
+    /**
+     * Opens the compose message activity
+     * @param sender - the sender of the message being replied to (can be null)
+     */
     private void showComposeScreen(String sender) {
         Intent i = new Intent(this, ComposeMessageActivity.class);
         i.putExtra("key", key);
@@ -265,6 +281,9 @@ public class MessageListActivity extends Activity {
         startActivity(i);
     }
 
+    /**
+     *   Called by system when a context menu item is selected
+     */
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         //System.out.println(item.getItemId());
@@ -283,6 +302,9 @@ public class MessageListActivity extends Activity {
         return true;
     }
 
+    /**
+     * Initializes the activity options menu (called by system)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -290,6 +312,10 @@ public class MessageListActivity extends Activity {
         return true;
     }
 
+
+    /**
+     *   Called by system when an item in the activity options menu is selected.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -307,6 +333,11 @@ public class MessageListActivity extends Activity {
             }
 
             refreshList();
+        } else if(id == R.id.exportMenuItem) {
+            Intent i = new Intent(this, ExportActivity.class);
+            i.putExtra("key", key);
+            allowResumeAccess();
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

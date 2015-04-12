@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="net.sanish.sms.ExportActivity">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="You can export your messages to a CSV file below. Exported Messages will be unencrypted and available to other apps to read."
+    />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="File Name"
+        android:ems="10"
+        android:id="@+id/fileName"
+    />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:text="Export"
+        android:layout_width="fill_parent"
+        android:id="@+id/exportButton"
+    />
+
+</LinearLayout>

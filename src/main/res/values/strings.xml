@@ -10,5 +10,6 @@
     <string name="title_activity_compose_message">Compose Message</string>
     <string name="title_activity_setup">SetupActivity</string>
     <string name="title_activity_startup">Messages</string>
+    <string name="title_activity_export">Export Messages</string>
 
 </resources>

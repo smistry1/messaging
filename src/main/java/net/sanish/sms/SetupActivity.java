@@ -10,11 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Activity where the user can set their encryption key, should be shown when the user opens the app for the first time
+ */
+
+
 public class SetupActivity extends Activity implements View.OnClickListener {
 
     private EditText key;               // Key Field
     private EditText keyConfirmation;   // Key Confirmation Field
     private Button okButton;
+
+    /**
+     * Initializes UI Components.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +35,10 @@ public class SetupActivity extends Activity implements View.OnClickListener {
         okButton.setOnClickListener((View.OnClickListener) this);
     }
 
+    /**
+     *   Called when user clicks OK, validates key, if valid it will encrypt and store a random string
+     *   encrypted by the key for future validation purposes.
+     */
     public void onClick(View v) {
 
         if(key.getText().toString().length() < 5) {
@@ -46,11 +59,6 @@ public class SetupActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.setup, menu);
-        return true;
-    }
+
 
 }

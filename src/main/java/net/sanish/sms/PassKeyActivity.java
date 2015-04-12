@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
+/**
+ * Activity for the user to enter their key.
+ */
+
 
 public class PassKeyActivity extends Activity  implements View.OnClickListener{
 
@@ -17,6 +21,11 @@ public class PassKeyActivity extends Activity  implements View.OnClickListener{
     private EditText passKeyInput;          // The pass key field
     private String keyCheckPhrase;          // The phrase to check the key against
 
+
+    /**
+     *   Called by system when activity is created, Activity should not be started if the keyCheckPhrase does not
+     *   exist, initializes the key and components.
+     */
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
@@ -32,6 +41,10 @@ public class PassKeyActivity extends Activity  implements View.OnClickListener{
 
     }
 
+    /**
+     * Called when the user taps OK, validates key trying to decrypt a previously stored encrypted string with
+     * it, if the key is valid launches message list with the key otherwise displays invalid key alert.
+     */
     @Override
     public void onClick(View view) {
         String key = passKeyInput.getText().toString();

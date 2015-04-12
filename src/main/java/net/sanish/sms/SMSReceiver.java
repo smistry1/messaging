@@ -11,6 +11,10 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
+/**
+ * BroadcastReceiver for recieving messages.
+ */
+
 public class SMSReceiver extends BroadcastReceiver {
 
 
@@ -53,6 +57,9 @@ public class SMSReceiver extends BroadcastReceiver {
 
     }
 
+    /**
+     * Shows new Message notification
+     */
     private void showNewMessageNotification(Context c, String sender) {
 
         Notification.Builder  nb = new Notification.Builder(c);

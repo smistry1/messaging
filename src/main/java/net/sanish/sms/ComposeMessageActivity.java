@@ -18,6 +18,10 @@ import android.widget.Toast;
 
 import net.sanish.sms.R;
 
+/**
+ * Activity for Composing/Replying to Messages.
+ */
+
 public class ComposeMessageActivity extends SubActivity implements View.OnClickListener {
 
     private Button sendButton;
@@ -28,7 +32,10 @@ public class ComposeMessageActivity extends SubActivity implements View.OnClickL
     private String key;
     private MessageEncryptor encryptor;
 
-
+    /**
+     *    Called when the activity is created, initializes UI
+     *    Bundle should contain Intent with key to encrypt/ decrypt messages.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +93,9 @@ public class ComposeMessageActivity extends SubActivity implements View.OnClickL
         // Put number in recipient field
     }
 
+    /**
+     *    Called by system when the user clicks send, validates input and sends message.
+     */
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.sendButton) {

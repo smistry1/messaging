@@ -12,4 +12,10 @@
         android:orderInCategory="100"
         android:showAsAction="never"
     />
+
+    <item android:id="@+id/exportMenuItem"
+        android:title="Export Messages"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+    />
 </menu>

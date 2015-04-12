@@ -12,10 +12,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Activity for viewing messages
+ */
+
 public class MessageViewActivity extends SubActivity {
 
 
-
+    /**
+     * Called by system when activity is created, intent should contain a message object to display
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

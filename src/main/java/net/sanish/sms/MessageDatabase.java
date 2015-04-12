@@ -19,6 +19,7 @@ public class MessageDatabase extends SQLiteOpenHelper {
 
     private Context c;
     /**
+     * Creates the messages table
      * Method automatically run on first access to database.
      */
     @Override
@@ -79,6 +80,23 @@ public class MessageDatabase extends SQLiteOpenHelper {
                 new String[]{Integer.toString(id)}
         );
     }
+
+    /**
+     * @return - ArrayList containing all messages in the DB encrypted by user key
+     */
+    public ArrayList getAllMessages() {
+        Cursor c =  this.getReadableDatabase().rawQuery("SELECT * FROM messages WHERE encryption_state = 1", null);
+        c.moveToFirst();
+        ArrayList<Message> l = new ArrayList<Message>();
+
+        while(!c.isAfterLast()) {
+            l.add(new Message(c.getString(1), c.getString(2), c.getInt(4), c.getInt(0), c.getString(3), c.getString(5)));
+            c.moveToNext();
+        }
+        return l;
+    }
+
+
 
 
     /**
@@ -159,6 +177,9 @@ public class MessageDatabase extends SQLiteOpenHelper {
 
 
 
+    /**
+     * Called by system when new version of db is created.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 }

@@ -35,6 +35,9 @@ public class Global {
         return s;
     }
 
+    /**
+     * Clears the notification that is used for new messages
+     */
     public static void clearNotification(Context c) {
         // Clears Notification with ID of 0
         ((NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(0);
@@ -73,6 +76,7 @@ public class Global {
 
         return name;
     }
+
 
     /**
      * @return - the phone number of the user
